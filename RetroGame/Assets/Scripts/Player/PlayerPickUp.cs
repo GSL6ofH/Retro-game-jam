@@ -5,6 +5,9 @@ public class PlayerPickup : MonoBehaviour
     public Transform holdPosition;
     public GameObject currentActiveAxe;
     private GameObject heldObject;
+    public AudioSource audioSource;
+    public AudioClip pickupSound;
+    public AudioClip dropSound;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -25,6 +28,9 @@ public class PlayerPickup : MonoBehaviour
                 heldObject.GetComponent<Rigidbody>().isKinematic = true;
                 heldObject.transform.position = holdPosition.position;
                 heldObject.transform.parent = holdPosition;
+                if (currentActiveAxe != null) currentActiveAxe.SetActive(false);
+                if (pickupSound != null) audioSource.PlayOneShot(pickupSound);
+
                 if (currentActiveAxe != null) currentActiveAxe.SetActive(false);
             }
         }
@@ -67,6 +73,10 @@ public class PlayerPickup : MonoBehaviour
         {
             heldObject.transform.parent = null;
             heldObject.GetComponent<Rigidbody>().isKinematic = false;
+            heldObject = null;
+            if (currentActiveAxe != null) currentActiveAxe.SetActive(true);
+            if (dropSound != null) audioSource.PlayOneShot(dropSound);
+
             heldObject = null;
             if (currentActiveAxe != null) currentActiveAxe.SetActive(true);
         }

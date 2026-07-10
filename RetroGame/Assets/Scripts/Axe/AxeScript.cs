@@ -3,9 +3,11 @@ using UnityEngine;
 public class AxeScript : MonoBehaviour
 {
     public Animator anim;
+    public AudioSource audioSource;
     public float axeDamage = 35f;
     public float maxDistance = 3f;
-
+    public AudioClip hitTreeSound;
+    public AudioClip swingAirSound;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -24,8 +26,24 @@ public class AxeScript : MonoBehaviour
             if (tree != null)
             {
                 tree.TakeDamage(axeDamage);
+                PlaySound(hitTreeSound);
                 Debug.Log("Tree hit");
             }
+            else
+            {
+                PlaySound(swingAirSound);
+            }
+        }
+        else
+        {
+            PlaySound(swingAirSound);
+        }
+    }
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 }
